@@ -1,8 +1,7 @@
-import chalk from "chalk"
 import fs from "fs"
 
 const handleError = (error) => {
-  throw new Error(chalk.red(error.code, "no such file"));
+  throw new Error("no such file");
 };
 
 const extractLinks = (text) => {
@@ -48,4 +47,3 @@ const getFileSync = (filePath) => {
 };
 
 export default getFileAsyncAwait
-// getFileAsyncAwait('./arquivos/texto1.md')
