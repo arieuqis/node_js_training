@@ -1,6 +1,10 @@
 import mongoose from "mongoose"
+import dotenv from "dotenv"
 
-mongoose.connect("mongodb+srv://alura:123@cluster0.jwfzu.mongodb.net/alura-node")
+if( process.env.NODE_ENV !== 'production'){
+    dotenv.config()
+}
+mongoose.connect(process.env.MONGO_URL)
 
 let db = mongoose.connection
 

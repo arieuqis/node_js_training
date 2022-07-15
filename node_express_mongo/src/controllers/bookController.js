@@ -2,21 +2,26 @@ import books from "../models/Book.js";
 
 class BookController {
   static findAllBooks = (req, res) => {
-    books.find((err, books) => {
-      res.status(200).json(books);
-    });
+    books
+      .find()
+      .populate('author')
+      .exec((err, books) => {
+        res.status(200).json(books);
+      });
   };
 
   static findById = (req, res) => {
     const id = req.params.id;
 
-    books.findById(id, (err, booksR) => {
-      if( err ){
-        res.status(404).send({message: `${err.message} - Not found`})
+    books.findById(id)
+    .populate('author', 'name')
+    .exec( (err, booksR) => {
+      if (err) {
+        res.status(404).send({ message: `${err.message} - Not found` });
       } else {
-        res.status(200).send(booksR)
+        res.status(200).send(booksR);
       }
-    })
+    });
   };
 
   static createBook = (req, res) => {
@@ -41,7 +46,7 @@ class BookController {
           message: `${err.message} - failed on updating book with id ${id}`,
         });
       } else {
-        res.status(200).send({message: 'Done!!'});
+        res.status(200).send({ message: "Done!!" });
       }
     });
   };
@@ -55,9 +60,20 @@ class BookController {
           message: `${err.message} - failed on deleting book with id ${id}`,
         });
       } else {
-        res.status(200).send({message: 'Deleted sucessfully!!'});
+        res.status(200).send({ message: "Deleted sucessfully!!" });
       }
     });
+  };
+
+  static findBooksByEditor = (req, res) => {
+    const editor = req.query.editor
+
+    books
+      .find({'editor': editor})
+      .populate('author')
+      .exec((err, books) => {
+        res.status(200).json(books);
+      });
   };
 }
 
